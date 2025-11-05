@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <!-- Use a public placeholder PNG logo; replace with your real logo PNG in /public/images/ -->
+  <link rel="icon" type="image/png" href="/images/logo-placeholder.png" />
+  <link rel="apple-touch-icon" href="/images/logo-placeholder.png" />
+    <!-- Adicione esta linha para incluir o Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>Ligthframe</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- Analytics script is left as-is; set VITE_ANALYTICS_ENDPOINT and VITE_ANALYTICS_WEBSITE_ID in env to enable. -->
+    <script
+      defer
+      src="%VITE_ANALYTICS_ENDPOINT%/umami"
+      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+  </body>
+
+</html>
