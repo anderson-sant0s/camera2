@@ -1,6 +1,4 @@
-import { Product } from "../types/product";
-
-export const allProducts: Product[] = [
+export const allProducts = [
   {
     id: 1,
     name: "Canon EOS R5",
@@ -10,8 +8,8 @@ export const allProducts: Product[] = [
     stock: 12,
     rating: 4.8,
     reviews: 156,
-  images: ['/images/canon.png'],
-  thumbnailUrl: '/images/canon.png',
+    images: ["/images/canon.png"],
+    thumbnailUrl: "/images/canon.png",
     badge: "PROMOÇÃO",
   },
   {
@@ -22,8 +20,8 @@ export const allProducts: Product[] = [
     stock: 8,
     rating: 4.9,
     reviews: 89,
-  images: ['/images/nikon.png'],
-  thumbnailUrl: '/images/nikon.png',
+    images: ["/images/nikon.png"],
+    thumbnailUrl: "/images/nikon.png",
   },
   {
     id: 3,
@@ -34,8 +32,8 @@ export const allProducts: Product[] = [
     stock: 10,
     rating: 4.7,
     reviews: 234,
-  images: ['/images/sony.png'],
-  thumbnailUrl: '/images/sony.png',
+    images: ["/images/sony.png"],
+    thumbnailUrl: "/images/sony.png",
     badge: "PROMOÇÃO",
   },
   {
@@ -46,8 +44,8 @@ export const allProducts: Product[] = [
     stock: 15,
     rating: 4.7,
     reviews: 89,
-  images: ['/images/lentesony.png'],
-  thumbnailUrl: '/images/lentesony.png',
+    images: ["/images/lentesony.png"],
+    thumbnailUrl: "/images/lentesony.png",
     badge: "DESTAQUE",
   },
   {
@@ -58,8 +56,8 @@ export const allProducts: Product[] = [
     stock: 7,
     rating: 4.6,
     reviews: 145,
-  images: ['/images/lentecanon.png'],
-  thumbnailUrl: '/images/lentecanon.png',
+    images: ["/images/lentecanon.png"],
+    thumbnailUrl: "/images/lentecanon.png",
   },
   {
     id: 6,
@@ -70,8 +68,8 @@ export const allProducts: Product[] = [
     stock: 9,
     rating: 4.8,
     reviews: 78,
-  images: ['/images/lentenikon.png'],
-  thumbnailUrl: '/images/lentenikon.png',
+    images: ["/images/lentenikon.png"],
+    thumbnailUrl: "/images/lentenikon.png",
     badge: "PROMOÇÃO",
   },
   {
@@ -83,8 +81,8 @@ export const allProducts: Product[] = [
     stock: 4,
     rating: 4.6,
     reviews: 234,
-  images: ['/images/tripe.png'],
-  thumbnailUrl: '/images/tripe.png',
+    images: ["/images/tripe.png"],
+    thumbnailUrl: "/images/tripe.png",
     badge: "PROMOÇÃO",
   },
   {
@@ -95,8 +93,8 @@ export const allProducts: Product[] = [
     stock: 20,
     rating: 4.5,
     reviews: 167,
-  images: ['/images/bolsa.png'],
-  thumbnailUrl: '/images/bolsa.png',
+    images: ["/images/bolsa.png"],
+    thumbnailUrl: "/images/bolsa.png",
   },
   {
     id: 9,
@@ -107,8 +105,8 @@ export const allProducts: Product[] = [
     stock: 30,
     rating: 4.8,
     reviews: 412,
-  images: ['/images/cartaosd.png'],
-  thumbnailUrl: '/images/cartaosd.png',
+    images: ["/images/cartaosd.png"],
+    thumbnailUrl: "/images/cartaosd.png",
     badge: "PROMOÇÃO",
   },
   {
@@ -119,8 +117,8 @@ export const allProducts: Product[] = [
     stock: 6,
     rating: 4.9,
     reviews: 45,
-  images: ['/images/flash.png'],
-  thumbnailUrl: '/images/flash.png',
+    images: ["/images/flash.png"],
+    thumbnailUrl: "/images/flash.png",
   },
   {
     id: 11,
@@ -130,8 +128,8 @@ export const allProducts: Product[] = [
     stock: 11,
     rating: 4.7,
     reviews: 92,
-  images: ['/images/softbox.png'],
-  thumbnailUrl: '/images/softbox.png',
+    images: ["/images/softbox.png"],
+    thumbnailUrl: "/images/softbox.png",
   },
   {
     id: 12,
@@ -142,8 +140,8 @@ export const allProducts: Product[] = [
     stock: 25,
     rating: 4.4,
     reviews: 256,
-  images: ['/images/ringlight.png'],
-  thumbnailUrl: '/images/ringlight.png',
+    images: ["/images/ringlight.png"],
+    thumbnailUrl: "/images/ringlight.png",
     badge: "PROMOÇÃO",
   },
 ];

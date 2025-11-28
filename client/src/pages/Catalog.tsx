@@ -1,12 +1,9 @@
 import { Link } from "wouter";
-import { useState } from "react";
-import { allProducts } from "../data/products";
+import { useState, useEffect } from "react";
 import { Product } from "../types/product";
 import { Star, ShoppingCart, Eye, Filter, X } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
 import { toast } from "sonner";
-
-
 
 const categories = ["Todas", "Câmeras", "Lentes", "Acessórios", "Iluminação"];
 const priceRanges = [
@@ -18,17 +15,78 @@ const priceRanges = [
 
 export default function Catalog() {
   const { addToCart } = useCart();
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState("Todas");
-  const [selectedPrice, setSelectedPrice] = useState<{ min: number; max: number } | null>(null);
+  const [selectedPrice, setSelectedPrice] = useState<{
+    min: number;
+    max: number;
+  } | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState("relevancia");
 
-  const filteredProducts = allProducts.filter((product) => {
-    const categoryMatch = selectedCategory === "Todas" || product.category === selectedCategory;
-    const priceMatch = !selectedPrice || (product.price >= selectedPrice.min && product.price <= selectedPrice.max);
+  // 🔥 BUSCA os produtos do backend MongoDB
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const res = await fetch("http://localhost:3000/api/products");
+        if (!res.ok) throw new Error("Erro ao carregar produtos");
+
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        setError("Não foi possível carregar os produtos.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, []);
+
+  // 📌 Loading visual
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-xl">
+        Carregando catálogo...
+      </div>
+    );
+  }
+
+  // 📌 Erro visual
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col gap-4 items-center justify-center text-center">
+        <p className="text-xl">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="retro-button"
+        >
+          Tentar novamente
+        </button>
+      </div>
+    );
+  }
+
+  // 🔎 FILTROS
+  const filteredProducts = products.filter((product) => {
+    const categoryMatch =
+      selectedCategory === "Todas" || product.category === selectedCategory;
+    const priceMatch =
+      !selectedPrice ||
+      (product.price >= selectedPrice.min &&
+        product.price <= selectedPrice.max);
+
     return categoryMatch && priceMatch;
   });
 
+  // ↕️ ORDENAR
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case "preco-asc":
@@ -42,12 +100,16 @@ export default function Catalog() {
     }
   });
 
+  // 🔥 A PARTIR DAQUI É O SEU CÓDIGO ORIGINAL
+
   return (
     <div className="min-h-screen bg-background">
-  {/* Cabeçalho da página */}
+      {/* Cabeçalho da página */}
       <section className="bg-card border-b-4 border-foreground py-8">
         <div className="container">
-          <h1 className="text-4xl font-bold uppercase mb-2">Catálogo de Produtos</h1>
+          <h1 className="text-4xl font-bold uppercase mb-2">
+            Catálogo de Produtos
+          </h1>
           <p className="text-muted-foreground font-mono">
             {filteredProducts.length} produtos encontrados
           </p>
@@ -56,8 +118,10 @@ export default function Catalog() {
 
       <div className="container py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Filtros da barra lateral */}
-          <aside className={`lg:col-span-1 ${showFilters ? "block" : "hidden lg:block"}`}>
+          {/* Filtros da barra lateral */}
+          <aside
+            className={`lg:col-span-1 ${showFilters ? "block" : "hidden lg:block"}`}
+          >
             <div className="retro-card sticky top-4">
               <div className="flex items-center justify-between mb-4 lg:hidden">
                 <h2 className="text-lg font-bold uppercase">Filtros</h2>
@@ -76,7 +140,10 @@ export default function Catalog() {
                 </h3>
                 <div className="space-y-2">
                   {categories.map((cat) => (
-                    <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                    <label
+                      key={cat}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
                       <input
                         type="radio"
                         name="category"
@@ -98,12 +165,20 @@ export default function Catalog() {
                 </h3>
                 <div className="space-y-2">
                   {priceRanges.map((range) => (
-                    <label key={range.label} className="flex items-center gap-2 cursor-pointer">
+                    <label
+                      key={range.label}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
                       <input
                         type="radio"
                         name="price"
-                        checked={selectedPrice?.min === range.min && selectedPrice?.max === range.max}
-                        onChange={() => setSelectedPrice({ min: range.min, max: range.max })}
+                        checked={
+                          selectedPrice?.min === range.min &&
+                          selectedPrice?.max === range.max
+                        }
+                        onChange={() =>
+                          setSelectedPrice({ min: range.min, max: range.max })
+                        }
                         className="w-4 h-4 cursor-pointer"
                       />
                       <span className="text-sm">{range.label}</span>
@@ -155,7 +230,10 @@ export default function Catalog() {
             {sortedProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {sortedProducts.map((product) => (
-                  <div key={product.id} className="retro-card group hover:shadow-xl transition relative">
+                  <div
+                    key={product.id}
+                    className="retro-card group hover:shadow-xl transition relative"
+                  >
                     {/* Selo */}
                     {product.badge && (
                       <div className="absolute -top-3 -right-3 retro-border-sm bg-destructive text-destructive-foreground px-3 py-1 text-xs font-bold uppercase">
@@ -176,7 +254,9 @@ export default function Catalog() {
                     </div>
 
                     {/* Informações do Produto */}
-                    <h3 className="text-lg font-bold uppercase mb-2">{product.name}</h3>
+                    <h3 className="text-lg font-bold uppercase mb-2">
+                      {product.name}
+                    </h3>
                     <p className="text-xs text-muted-foreground uppercase mb-3 font-mono">
                       {product.category}
                     </p>
@@ -188,7 +268,11 @@ export default function Catalog() {
                           <Star
                             key={i}
                             size={14}
-                            className={i < Math.floor(product.rating) ? "fill-accent text-accent" : "text-muted"}
+                            className={
+                              i < Math.floor(product.rating)
+                                ? "fill-accent text-accent"
+                                : "text-muted"
+                            }
                           />
                         ))}
                       </div>
@@ -216,7 +300,9 @@ export default function Catalog() {
                       <button
                         onClick={() => {
                           addToCart(product);
-                          toast.success(`${product.name} adicionado ao carrinho!`);
+                          toast.success(
+                            `${product.name} adicionado ao carrinho!`
+                          );
                         }}
                         className="flex-1 retro-button flex items-center justify-center gap-2 text-sm"
                       >
@@ -234,7 +320,9 @@ export default function Catalog() {
               </div>
             ) : (
               <div className="retro-card text-center py-12">
-                <p className="text-lg text-muted-foreground mb-4">Nenhum produto encontrado</p>
+                <p className="text-lg text-muted-foreground mb-4">
+                  Nenhum produto encontrado
+                </p>
                 <button
                   onClick={() => {
                     setSelectedCategory("Todas");
@@ -252,4 +340,3 @@ export default function Catalog() {
     </div>
   );
 }
-

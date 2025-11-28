@@ -6,7 +6,12 @@ import path from "path";
 import { defineConfig } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime()];
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  vitePluginManusRuntime(),
+];
 
 export default defineConfig({
   plugins,
@@ -24,8 +29,8 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
-    port: 3000,
-  strictPort: false, // Encontrará a próxima porta disponível se 3000 estiver ocupada
+    port: 5173,
+    strictPort: false, // Encontrará a próxima porta disponível se 3000 estiver ocupada
     host: true,
     allowedHosts: [
       ".manuspre.computer",

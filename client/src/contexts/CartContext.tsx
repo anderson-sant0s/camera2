@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { Product } from "../types/product";
+import { useAuth } from "./AuthContext";
 
 interface CartItem extends Product {
   quantity: number;
@@ -18,14 +19,21 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const addToCart = (product: Product) => {
+    if (!user) {
+      alert("Você precisa estar logado para adicionar itens ao carrinho!");
+      return;
+    }
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === product.id);
       if (existingItem) {
         return prevCart.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       } else {
         return [...prevCart, { ...product, quantity: 1 }];
@@ -38,10 +46,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateQuantity = (productId: number, quantity: number) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity: quantity } : item
-      ).filter(item => item.quantity > 0) // Remove se a quantidade for 0
+    setCart(
+      (prevCart) =>
+        prevCart
+          .map((item) =>
+            item.id === productId ? { ...item, quantity: quantity } : item
+          )
+          .filter((item) => item.quantity > 0) // Remove se a quantidade for 0
     );
   };
 
@@ -50,7 +61,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalPrice = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <CartContext.Provider

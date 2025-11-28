@@ -1,13 +1,20 @@
 import { Link } from "wouter";
 import { ShoppingCart, X, Trash2 } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
 import { useCart } from "../contexts/CartContext";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Input } from "./ui/input";
 
 export function CartSheet() {
-  const { cart, removeFromCart, updateQuantity, totalItems, totalPrice } = useCart();
+  const { cart, removeFromCart, updateQuantity, totalItems, totalPrice } =
+    useCart();
 
   return (
     <Sheet>
@@ -21,26 +28,35 @@ export function CartSheet() {
           )}
         </button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-lg flex flex-col">
+      <SheetContent
+        aria-describedby={undefined}
+        className="w-full sm:max-w-lg flex flex-col"
+      >
         <SheetHeader>
           <SheetTitle className="text-2xl font-bold uppercase border-b-2 border-foreground pb-2">
             Seu Carrinho ({totalItems})
           </SheetTitle>
         </SheetHeader>
         <div className="flex-1 overflow-y-auto space-y-4 py-4">
-              {cart.length === 0 ? (
+          {cart.length === 0 ? (
             <div className="text-center py-12">
-              <ShoppingCart size={48} className="mx-auto mb-4 text-muted-foreground" />
-              <p className="text-lg text-muted-foreground">Seu carrinho está vazio.</p>
-              <Link href="/catalogo">
-                <Button className="mt-4 retro-button">
-                  Ver Produtos
-                </Button>
+              <ShoppingCart
+                size={48}
+                className="mx-auto mb-4 text-muted-foreground"
+              />
+              <p className="text-lg text-muted-foreground">
+                Seu carrinho está vazio.
+              </p>
+              <Link href="/carrinho">
+                <Button className="mt-4 retro-button">Ver Produtos</Button>
               </Link>
             </div>
           ) : (
             cart.map((item) => (
-              <div key={item.id} className="flex items-center gap-4 retro-card p-3">
+              <div
+                key={item.id}
+                className="flex items-center gap-4 retro-card p-3"
+              >
                 <div className="w-16 h-16 flex-shrink-0 overflow-hidden rounded">
                   <img
                     src={item.thumbnailUrl ?? item.images?.[0]}
@@ -51,9 +67,14 @@ export function CartSheet() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-bold uppercase">{item.name}</h3>
-                  <p className="text-sm text-muted-foreground">{item.category}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {item.category}
+                  </p>
                   <p className="font-bold mt-1">
-                    R$ {(item.price * item.quantity).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                    R${" "}
+                    {(item.price * item.quantity).toLocaleString("pt-BR", {
+                      minimumFractionDigits: 2,
+                    })}
                   </p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
@@ -67,7 +88,9 @@ export function CartSheet() {
                     type="number"
                     min="1"
                     value={item.quantity}
-                    onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                    onChange={(e) =>
+                      updateQuantity(item.id, parseInt(e.target.value))
+                    }
                     className="w-16 h-8 retro-input text-center"
                   />
                 </div>
@@ -80,7 +103,10 @@ export function CartSheet() {
             <div className="flex justify-between items-center mb-4">
               <span className="text-lg font-bold uppercase">Total:</span>
               <span className="text-2xl font-bold">
-                R$ {totalPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                R${" "}
+                {totalPrice.toLocaleString("pt-BR", {
+                  minimumFractionDigits: 2,
+                })}
               </span>
             </div>
             <Link href="/carrinho">
